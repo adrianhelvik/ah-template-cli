@@ -9,7 +9,7 @@ var uppercamelcase = function (str) {
     var first = str.charAt(0).toUpperCase();
     if (str.length === 1)
         return first;
-    str = first + str.substring(1, str.length);
+    return first + str.substring(1, str.length);
 };
 var ejs = require('ejs');
 var templates = require('./templates');
