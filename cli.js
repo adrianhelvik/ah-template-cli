@@ -4,6 +4,7 @@ var fs = require('fs');
 var genericCli = require('generic-cli');
 var decamelize = require('decamelize');
 var camelcase = require('camelcase');
+var uppercamelcase = require('uppercamelcase');
 var ejs = require('ejs');
 var templates = require('./templates');
 var pluralize = require('pluralize');
@@ -27,7 +28,7 @@ genericCli({
                 this.requireArgs();
                 this.onlyLetterArgs();
 
-                controllerName = camelcase(controllerName);
+                controllerName = uppercamelcase(controllerName);
 
                 this.makeClass('controller', controllerName)
                     .then(() => {
@@ -44,6 +45,8 @@ genericCli({
                 this.requireArgs();
                 this.onlyLetterArgs();
 
+                serviceName = uppercamelcase(serviceName);
+
                 this.makeClass('service', serviceName)
                     .then(() => {
                         this.success('Made service: ' + serviceName)
@@ -59,6 +62,8 @@ genericCli({
                 this.requireArgs();
                 this.onlyLetterArgs();
 
+                componentName = camelcase(componentName);
+
                 this.makeFunction('component', componentName)
                     .then(() => {
                         this.success('Made component: ' + serviceName)
@@ -70,9 +75,11 @@ genericCli({
                         console.error(err);
                     });
             },
-            directive(name) {
+            directive(directiveName) {
                 this.requireArgs();
                 this.onlyLetterArgs();
+
+                directiveName = camelcase(directiveName);
 
                 this.makeFunction('directive', directiveName)
                     .then(() => {
