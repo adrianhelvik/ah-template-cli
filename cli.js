@@ -7,8 +7,9 @@ var camelcase = require('camelcase');
 var uppercamelcase = function (str) {
     str = camelcase(str);
     var first = str.charAt(0).toUpperCase();
-    if (str.length === 1)
+    if (str.length === 1) {
         return first;
+    }
     return first + str.substring(1, str.length);
 };
 var ejs = require('ejs');
@@ -25,6 +26,7 @@ genericCli({
             component: 'Create a component',
             directive: 'Create a directive',
             service: 'Create a service',
+            view: 'Create a view'
         }
     },
 
@@ -38,10 +40,11 @@ genericCli({
 
                 this.makeClass('controller', controllerName)
                     .then(() => {
-                        this.success('Made controller: ' + controllerName)
+                        this.success('Made controller: ' + controllerName);
                     }, (err) => {
-                        if (err)
+                        if (err) {
                             throw err;
+                        }
                         this.info('Did not make controller: ' + controllerName);
                     }).catch(err => {
                         console.error(err);
@@ -55,10 +58,11 @@ genericCli({
 
                 this.makeClass('service', serviceName)
                     .then(() => {
-                        this.success('Made service: ' + serviceName)
+                        this.success('Made service: ' + serviceName);
                     }, (err) => {
-                        if (err)
+                        if (err) {
                             throw err;
+                        }
                         this.info('Did not make service: ' + serviceName);
                     }).catch(err => {
                         console.error(err);
@@ -72,11 +76,12 @@ genericCli({
 
                 this.makeFunction('component', componentName)
                     .then(() => {
-                        this.success('Made component: ' + serviceName)
+                        this.success('Made component: ' + componentName);
                     }, (err) => {
-                        if (err)
+                        if (err) {
                             throw err;
-                        this.info('Did not make component: ' + serviceName);
+                        }
+                        this.info('Did not make component: ' + componentName);
                     }).catch(err => {
                         console.error(err);
                     });
@@ -89,13 +94,28 @@ genericCli({
 
                 this.makeFunction('directive', directiveName)
                     .then(() => {
-                        this.success('Made component: ' + directiveName)
+                        this.success('Made component: ' + directiveName);
                     }, (err) => {
-                        if (err)
+                        if (err) {
                             throw err;
+                        }
                         this.info('Did not make directive: ' + directiveName);
                     }).catch(err => {
                         console.error(err);
+                    });
+            },
+            view(name) {
+                this.requireArgs();
+                this.onlyLetterArgs();
+
+                this.makeTemplate(name)
+                    .then(() => {
+                        this.success('Make view ' + name);
+                    }, (err) => {
+                        if (err) {
+                            throw err;
+                        }
+                        this.info('Did not make view ' + name);
                     });
             }
         }
@@ -111,7 +131,8 @@ genericCli({
             Object.keys(this.args).forEach(arg => {
                 this.onlyLetters(arg);
             });
-        }
+        },
+        makeView
     }
 });
 
@@ -123,11 +144,21 @@ function makeFunction(type, name) {
     return writeTemplate.call(this, 'function', type, name);
 }
 
+function makeView(name) {
+    return this.writeTemplate.call(this, 'view', name);
+}
+
 function writeTemplate(templateName, type, name) {
-    let template = ejs.render(templates[templateName], {
+    const template = ejs.render(templates[templateName], {
         name
     });
-    let fileName = process.cwd() + '/src/js/' + pluralize(type) + '/' + decamelize(name, '-') + '.js';
+
+    let fileName;
+    if (type === 'view') {
+        fileName = process.cwd() + '/src/views/' + templateName + '.html';
+    } else {
+        fileName = process.cwd() + '/src/js/' + pluralize(type) + '/' + decamelize(name, '-') + '.js';
+    }
 
     return Promise.resolve({
         template,
@@ -139,7 +170,7 @@ function writeTemplate(templateName, type, name) {
                     data.isFile = false;
                     res(data);
                 } else {
-                    data.isFile = stats.isFile()
+                    data.isFile = stats.isFile();
                     res(data);
                 }
             });
@@ -161,11 +192,13 @@ function writeTemplate(templateName, type, name) {
     }).then(data => {
         return new Promise((res, rej) => {
             mkdirp(data.fileName.split('/').slice(0, -1).join('/'), (err) => {
-                if (err)
+                if (err) {
                     rej(err);
-                else res(err);
-            })
-        })
+                } else {
+                    res(err);
+                }
+            });
+        });
     }).then(data => {
         return new Promise((res, rej) => {
             fs.writeFile(fileName, template, (err) => {
@@ -173,7 +206,9 @@ function writeTemplate(templateName, type, name) {
                     this.error('Could not write file');
                     rej(err);
                 }
-                else res();
+                else {
+                    res();
+                }
             });
         });
     });
