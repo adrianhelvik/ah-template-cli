@@ -19,6 +19,14 @@ module.exports = <%= name %>;
 `<!-- A fresh view for your pleasure! -->`,
 'object':
 `module.exports = {
-    //
+    bindings: {
+        // @ : text
+        // < : one way binding
+        // = : two way binding
+        // & : Outputs are realized with & bindings, which function as callbacks to component events.
+    },
+    template: \`
+        <!-- Your tasty htmlz... -->
+    \`
 }`
 };
