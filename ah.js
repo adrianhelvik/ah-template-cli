@@ -74,7 +74,7 @@ genericCli({
 
                 name = camelcase(name);
 
-                this.makeFunction('component', name)
+                this.makeObject('component', name)
                     .then(() => {
                         this.success('Made component: ' + name);
                     }, (err) => {
@@ -123,6 +123,8 @@ genericCli({
     extend: {
         makeClass,
         makeFunction,
+        makeObject,
+        makeView,
         onlyLetters(arg) {
             return this.assertMatches(this.args[arg], /^[a-zA-Z]+$/);
         },
@@ -131,7 +133,6 @@ genericCli({
                 this.onlyLetters(arg);
             });
         },
-        makeView
     }
 });
 
@@ -141,6 +142,10 @@ function makeClass(type, name) {
 
 function makeFunction(type, name) {
     return writeTemplate.call(this, 'function', type, name);
+}
+
+function makeObject(type, name) {
+    return writeTemplate.call(this, 'object', type, name);
 }
 
 function makeView(name) {
