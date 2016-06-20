@@ -32,56 +32,56 @@ genericCli({
 
     commands: {
         make: {
-            controller(controllerName) {
+            controller(name) {
                 this.requireArgs();
                 this.onlyLetterArgs();
 
-                controllerName = uppercamelcase(controllerName);
+                name = uppercamelcase(name);
 
-                this.makeClass('controller', controllerName)
+                this.makeClass('controller', name)
                     .then(() => {
-                        this.success('Made controller: ' + controllerName);
+                        this.success('Made controller: ' + name);
                     }, (err) => {
                         if (err) {
                             throw err;
                         }
-                        this.info('Did not make controller: ' + controllerName);
+                        this.info('Did not make controller: ' + name);
                     }).catch(err => {
                         console.error(err);
                     });
             },
-            service(serviceName) {
+            service(name) {
                 this.requireArgs();
                 this.onlyLetterArgs();
 
-                serviceName = uppercamelcase(serviceName);
+                name = uppercamelcase(name);
 
-                this.makeClass('service', serviceName)
+                this.makeClass('service', name)
                     .then(() => {
-                        this.success('Made service: ' + serviceName);
+                        this.success('Made service: ' + name);
                     }, (err) => {
                         if (err) {
                             throw err;
                         }
-                        this.info('Did not make service: ' + serviceName);
+                        this.info('Did not make service: ' + name);
                     }).catch(err => {
                         console.error(err);
                     });
             },
-            component(componentName) {
+            component(name) {
                 this.requireArgs();
                 this.onlyLetterArgs();
 
-                componentName = camelcase(componentName);
+                name = camelcase(name);
 
-                this.makeFunction('component', componentName)
+                this.makeFunction('component', name)
                     .then(() => {
-                        this.success('Made component: ' + componentName);
+                        this.success('Made component: ' + name);
                     }, (err) => {
                         if (err) {
                             throw err;
                         }
-                        this.info('Did not make component: ' + componentName);
+                        this.info('Did not make component: ' + name);
                     }).catch(err => {
                         console.error(err);
                     });
@@ -160,7 +160,7 @@ function writeTemplate(templateName, type, name) {
     if (templateName === 'view') {
         fileName = process.cwd() + '/src/views/' + decamelize(name) + '.html';
     } else {
-        fileName = process.cwd() + '/src/js/' + pluralize(type) + '/' + decamelize(templateName, '-') + '.js';
+        fileName = process.cwd() + '/src/js/' + pluralize(type) + '/' + decamelize(name, '-') + '.js';
     }
 
     return Promise.resolve({
