@@ -26,7 +26,6 @@ module.exports = <%= name %>;
         // & : Outputs are realized with & bindings, which function as callbacks to component events.
     },
     template: \`
-        <!-- Your tasty htmlz... -->
     \`
-}`
+};`
 };
