@@ -9,7 +9,7 @@ module.exports = {
 module.exports = <%= name %>;
 `,
     'function':
-`function <%= name %> {
+`function () <%= name %> {
     'ngInject';
 }
 
