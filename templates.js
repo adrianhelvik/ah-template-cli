@@ -14,5 +14,7 @@ module.exports = <%= name %>;
 }
 
 module.exports = <%= name %>;
-`
+`,
+    'view':
+`<!-- A fresh view for your pleasure! -->`
 };

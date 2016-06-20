@@ -106,9 +106,8 @@ genericCli({
             },
             view(name) {
                 this.requireArgs();
-                this.onlyLetterArgs();
 
-                this.makeTemplate(name)
+                this.makeView(name)
                     .then(() => {
                         this.success('Make view ' + name);
                     }, (err) => {
@@ -145,7 +144,7 @@ function makeFunction(type, name) {
 }
 
 function makeView(name) {
-    return this.writeTemplate.call(this, 'view', name);
+    return writeTemplate.call(this, 'view', null, name);
 }
 
 function writeTemplate(templateName, type, name) {
@@ -153,11 +152,15 @@ function writeTemplate(templateName, type, name) {
         name
     });
 
+    if (! type) {
+        type = '';
+    }
+
     let fileName;
-    if (type === 'view') {
-        fileName = process.cwd() + '/src/views/' + templateName + '.html';
+    if (templateName === 'view') {
+        fileName = process.cwd() + '/src/views/' + decamelize(name) + '.html';
     } else {
-        fileName = process.cwd() + '/src/js/' + pluralize(type) + '/' + decamelize(name, '-') + '.js';
+        fileName = process.cwd() + '/src/js/' + pluralize(type) + '/' + decamelize(templateName, '-') + '.js';
     }
 
     return Promise.resolve({
