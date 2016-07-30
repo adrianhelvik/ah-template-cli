@@ -13,7 +13,7 @@ var uppercamelcase = function (str) {
     return first + str.substring(1, str.length);
 };
 var ejs = require('ejs');
-var templates = require('./templates');
+var templates = require('./old-templates');
 var pluralize = require('pluralize');
 var mkdirp = require('mkdirp');
 require('colors');
@@ -94,7 +94,7 @@ genericCli({
 
                 this.makeFunction('directive', directiveName)
                     .then(() => {
-                        this.success('Made component: ' + directiveName);
+                        this.success('Made directive: ' + directiveName);
                     }, (err) => {
                         if (err) {
                             throw err;
