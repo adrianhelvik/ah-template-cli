@@ -26,7 +26,8 @@ genericCli({
             component: 'Create a component',
             directive: 'Create a directive',
             service: 'Create a service',
-            view: 'Create a view'
+            view: 'Create a view',
+            filter: 'Create a filter'
         }
     },
 
@@ -115,6 +116,19 @@ genericCli({
                             throw err;
                         }
                         this.info('Did not make view ' + name);
+                    });
+            },
+            filter(name) {
+                this.makeFunction('filter', name)
+                    .then(() => {
+                        this.success('Made filter: ' + name);
+                    }, (err) => {
+                        if (err) {
+                            throw err;
+                        }
+                        this.info('Did not make filter: ' + name);
+                    }).catch(err => {
+                        console.error(err);
                     });
             }
         }
